@@ -1,0 +1,129 @@
+.wrapper {
+  position: relative;
+  padding: 1rem;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  display: flex;
+  width: 25%;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media (max-width: 1280px) {
+  /*
+  * from 0 to 1280px
+  */
+  .logo {
+    width: auto;
+  }
+  .nav {
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+.nav_items_container {
+  display: flex;
+  background-color: #191b1f;
+  border-radius: 1rem;
+}
+.nav_item {
+  z-index: 1;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin: 0.125rem;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600; /* semi-bold */
+  cursor: pointer;
+  border-radius: 14px;
+  transition: 250ms;
+  color: rgb(195, 197, 203);
+}
+.nav_item:hover {
+  background-color: #373c45;
+  color: #ffffff;
+}
+.nav_active_item {
+  background-color: #20242a;
+  color: #ffffff;
+}
+.nav_bg {
+  position: absolute;
+  border-radius: 1rem;
+  background-color: #20242a;
+  height: 2.5rem;
+  transform: translateX(-50%);
+  transition: cubic-bezier(0.5, 0, 0, 1) 250ms;
+}
+.buttons_container {
+  display: flex;
+  width: 25%;
+  justify-content: flex-end;
+  align-items: center;
+}
+.button {
+  display: flex;
+  align-items: center;
+  background-color: #191b1f;
+  border-radius: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  height: 40px;
+}
+.button_padding {
+  padding: 0.125rem;
+}
+.button_text_container {
+  height: 2rem;
+  display: flex;
+  align-items: center;
+}
+.button_icon_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+.button_accent {
+  background-color: #172a42;
+  border-width: 1px;
+  border-color: #163256;
+  height: 100%;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4f90ea;
+  padding: 0.5rem;
+  border: 1px solid rgba(21, 61, 111, 0.44);
+}
+.button_accent:hover {
+  border-color: #234169;
+}
+.button_menu {
+  border: 1px solid transparent;
+  padding: 2px 4px 2px 4px;
+}
+.button_menu:hover {
+  border: 1px solid #40444f;
+}
+.button_menu_icon {
+  width: 22px;
+  height: 22px;
+}
