@@ -18,6 +18,8 @@ studio/node_modules
 /studio/coverage
 /studio/logs
 
+# Solidity Smart Contracts with HardHat
+smart_contract/node_modules
 
 # production
 client/build
