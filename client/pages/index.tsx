@@ -1,7 +1,6 @@
 import type { NextPage } from "next"
-import Head from "next/head"
-import Image from "next/image"
 import Header from "../components/Header/Header"
+import Main from "../components/Main/Main"
 import styles from "../styles/Home.module.css"
 import { useWindowDimensions } from "../lib/FuncLib"
 import { GlobalContext } from "../lib/Contexts"
@@ -18,6 +17,8 @@ const Home: NextPage = () => {
     >
       <div className={styles.wrapper}>
         <Header />
+        <Main />
+        <div> {"I'm the footer"}</div>
       </div>
     </GlobalContext.Provider>
   )

@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useContext } from "react"
 import { getElementRect } from "../../lib/FuncLib"
 import { GlobalContext, GlobalContextInterface } from "../../lib/Contexts"
+import { navState } from "../../types/Types"
 
-export enum navState {
-  SWAP = "Swap",
-  POOL = "Pool",
-  VOTE = "Vote",
-}
 export const nav_buttons = [navState.SWAP, navState.POOL, navState.VOTE]
 
 interface NavButtonProps {

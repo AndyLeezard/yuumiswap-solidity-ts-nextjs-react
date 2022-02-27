@@ -37,10 +37,7 @@
 }
 .nav_item {
   z-index: 1;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   margin: 0.125rem;
   display: flex;
   align-items: center;
@@ -111,7 +108,8 @@
   justify-content: center;
   color: #4f90ea;
   padding: 0.5rem;
-  border: 1px solid rgba(21, 61, 111, 0.44);
+  border: 1px solid;
+  border-color: rgba(21, 61, 111, 0.44);
 }
 .button_accent:hover {
   border-color: #234169;

@@ -7,9 +7,10 @@ import ethLogo from "../../assets/eth.png"
 import Logo from "../../assets/logo.png"
 import styles from "../../styles/Header.module.css"
 import * as Resources from "./Resources"
+import { navState } from "../../types/Types"
 
 const Header: React.FC<{}> = () => {
-  const [selectedNav, setSelectedNav] = useState(Resources.navState.SWAP)
+  const [selectedNav, setSelectedNav] = useState(navState.SWAP)
   const [hover, setHover] = useState(false)
 
   const connectWallet = () => {}

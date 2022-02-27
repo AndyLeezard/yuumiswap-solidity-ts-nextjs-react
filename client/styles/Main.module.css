@@ -1,0 +1,123 @@
+.wrapper {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3.5rem;
+}
+
+.content {
+  background-color: #191b1f;
+  width: 40rem;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.form_header {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.transfer_prop_container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #20242a;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  font-size: 1.875rem; /* 30px */
+  line-height: 2.25rem; /* 36px */
+  border: 1px solid;
+  border-color: #20242a;
+}
+
+.transfer_prop_container:hover {
+  border-color: #41444f;
+}
+
+.transfer_prop_container input {
+  -webkit-appearance: none;
+}
+
+.transfer_prop_input {
+  background-color: transparent;
+  border: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  font-size: 1.5rem; /* 24px */
+  line-height: 2rem; /* 32px */
+}
+
+.transfer_prop_input ::placeholder {
+  color: #b2b9d2;
+}
+
+.currency_selector {
+  display: flex;
+  width: 25%;
+}
+
+.currency_selector_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: min-content;
+  background-color: #2d2f36;
+  border-radius: 1rem;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-top: -0.2rem;
+}
+
+.currency_selector_content:hover {
+  background-color: #41444f;
+}
+
+.currency_selector_icon {
+  display: flex;
+  align-items: center;
+}
+
+.currency_selector_ticker {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.currency_selector_arrow {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75rem; /* 28px */
+}
+
+.confirm_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2172e5;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 1rem;
+  padding: 1.5rem 2rem 1.5rem 2rem;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid;
+  border-color: #2172e5;
+}
+
+.confirm_button:hover {
+  border-color: #234169;
+}
