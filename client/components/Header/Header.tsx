@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Image from "next/Image"
 import { FiArrowUpRight } from "react-icons/fi"
 import { AiOutlineDown } from "react-icons/ai"
@@ -8,12 +8,18 @@ import Logo from "../../assets/logo.png"
 import styles from "../../styles/Header.module.css"
 import * as Resources from "./Resources"
 import { navState } from "../../types/Types"
+import {
+  TransactionContext,
+  TransactionContextInterface,
+} from "../../contexts/Contexts"
+import { shortAddress } from "../../lib/FuncLib"
 
 const Header: React.FC<{}> = () => {
   const [selectedNav, setSelectedNav] = useState(navState.SWAP)
   const [hover, setHover] = useState(false)
-
-  const connectWallet = () => {}
+  const { currentAccount, connectWallet } = useContext(
+    TransactionContext
+  ) as TransactionContextInterface
 
   return (
     <div className={styles.wrapper}>
@@ -58,12 +64,20 @@ const Header: React.FC<{}> = () => {
             <AiOutlineDown />
           </div>
         </div>
-        <div
-          onClick={() => connectWallet()}
-          className={`${styles.button} ${styles.button_padding}`}
-        >
-          <div className={styles.button_accent}>Connect Wallet</div>
-        </div>
+        {currentAccount ? (
+          <div className={`${styles.button} ${styles.button_padding}`}>
+            <div className={styles.button_text_container}>
+              {shortAddress(currentAccount)}
+            </div>
+          </div>
+        ) : (
+          <div
+            onClick={() => connectWallet()}
+            className={`${styles.button} ${styles.button_padding}`}
+          >
+            <div className={styles.button_accent}>Connect Wallet</div>
+          </div>
+        )}
         <div
           className={`${styles.button} ${styles.button_padding} ${styles.button_menu}`}
         >

@@ -3,13 +3,13 @@ import Header from "../components/Header/Header"
 import Main from "../components/Main/Main"
 import styles from "../styles/Home.module.css"
 import { useWindowDimensions } from "../lib/FuncLib"
-import { GlobalContext } from "../lib/Contexts"
+import { ViewportContext } from "../contexts/Contexts"
 
 const Home: NextPage = () => {
   const { height, width } = useWindowDimensions()
 
   return (
-    <GlobalContext.Provider
+    <ViewportContext.Provider
       value={{
         screenHeight: height,
         screenWidth: width,
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
         <Main />
         <div> {"I'm the footer"}</div>
       </div>
-    </GlobalContext.Provider>
+    </ViewportContext.Provider>
   )
 }
 

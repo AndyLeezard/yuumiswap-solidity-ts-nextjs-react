@@ -47,3 +47,9 @@ export const getElementRect = (elementID: string, hasParent = true) => {
     return null
   }
 }
+
+export const shortAddress = (str: string) => {
+  return str.length > 11
+    ? `${str.substring(0, 4)}...${str.substring(str.length - 4)}`
+    : str
+}

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from "react"
 import { getElementRect } from "../../lib/FuncLib"
-import { GlobalContext, GlobalContextInterface } from "../../lib/Contexts"
+import {
+  ViewportContext,
+  ViewportContextInterface,
+} from "../../contexts/Contexts"
 import { navState } from "../../types/Types"
 
 export const nav_buttons = [navState.SWAP, navState.POOL, navState.VOTE]
@@ -60,7 +63,7 @@ export const ActiveButtonBackground: React.FC<ActiveButtonBackgroundProps> = ({
   className,
   render,
 }) => {
-  const globalContext = useContext(GlobalContext) as GlobalContextInterface
+  const globalContext = useContext(ViewportContext) as ViewportContextInterface
   const [rect, setRect] = useState<DOMRect | null>(null)
 
   useEffect(() => {
