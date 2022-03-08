@@ -47,3 +47,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 smart_contract/hardhat.config.js
+hardhat.config.js
+smart_contract/hardhat.config_back.js
