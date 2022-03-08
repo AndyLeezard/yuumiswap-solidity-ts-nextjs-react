@@ -5,7 +5,7 @@ contract Transactions {
     event Transfer(
         address sender,
         address receiver,
-        uint256 amount,
+        uint amount,
         string message,
         uint256 timestamp,
         string keyword
@@ -13,7 +13,7 @@ contract Transactions {
 
     function publishTransaction(
         address payable receiver,
-        uint256 amount,
+        uint amount,
         string memory message,
         string memory keyword
     ) public {
