@@ -15,7 +15,7 @@ import {
 import { shortAddress } from "../../lib/FuncLib"
 
 const Header: React.FC<{}> = () => {
-  const [selectedNav, setSelectedNav] = useState(navState.SWAP)
+  const [selectedNav, setSelectedNav] = useState(navState.SEND)
   const [hover, setHover] = useState(false)
   const { currentAccount, connectWallet } = useContext(
     TransactionContext

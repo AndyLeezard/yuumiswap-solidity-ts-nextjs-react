@@ -53,3 +53,16 @@ export const shortAddress = (str: string) => {
     ? `${str.substring(0, 4)}...${str.substring(str.length - 4)}`
     : str
 }
+
+type ErrorCode = "no_connection"|"no_eth_object"
+
+export const getErrorMessage = (error_code:ErrorCode) => {
+  switch(error_code){
+    case "no_connection":
+      return "Please install & connect your MetaMask wallet"
+    case "no_eth_object":
+      return "No Ethereum object"
+    default:
+      return error_code
+  }
+}

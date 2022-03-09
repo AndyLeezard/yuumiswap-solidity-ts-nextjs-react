@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from "react"
-
+import { contractABI, contractAddress } from "../lib/Constants"
+import { ethers } from "ethers"
+import { getErrorMessage } from "../lib/FuncLib"
 declare global {
   interface Window {
     ethereum: any
   }
 }
 
+export enum TransactionFormDataProperties {
+  ADDRESS_TO = "addressTo",
+  AMOUNT = "amount"
+}
+
+export type TransactionFormData = {
+  addressTo:string
+  amount:string
+}
 export interface ViewportContextInterface {
   screenHeight: number
   screenWidth: number
@@ -17,7 +28,11 @@ export const ViewportContext =
 export interface TransactionContextInterface {
   accounts: any[]
   currentAccount: any
+  formData: TransactionFormData
+  processing: boolean
   connectWallet: (metamask?: any) => Promise<void>
+  sendTransaction: (metamask?: any, connectedAccount?: undefined) => Promise<void>
+  handleChange: (e: any, name: string) => void
 }
 export const TransactionContext =
   React.createContext<TransactionContextInterface | null>(null)
@@ -28,6 +43,21 @@ if (typeof window !== "undefined") {
   eth = window.ethereum
 }
 
+const getEthereumContract = () => {
+  const provider = new ethers.providers.Web3Provider(eth)
+  const signer = provider.getSigner()
+  const transactionContract = new ethers.Contract(
+    contractAddress,
+    contractABI,
+    signer
+  )
+  return transactionContract
+}
+
+const INITIAL_FORMDATA = {
+  addressTo: '',
+  amount: ''
+}
 interface TransactionProviderProps {
   children: React.ReactNode
 }
@@ -35,8 +65,10 @@ interface TransactionProviderProps {
 export const TransactionProvider: React.FC<TransactionProviderProps> = ({
   children,
 }) => {
-  const [accounts, setAccounts] = useState([])
-  const [currentAccount, setCurrentAccount] = useState()
+  const [accounts, setAccounts] = useState<any[]>([])
+  const [currentAccount, setCurrentAccount] = useState<any>()
+  const [processing, setProcessing] = useState<boolean>(false)
+  const [formData, setFormData] = useState<TransactionFormData>(INITIAL_FORMDATA)
 
   /**
    * for debugging purposes
@@ -51,7 +83,7 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
 
   const connectWallet = async (metamask = eth) => {
     try {
-      if (!metamask) return alert("Please install Metamask.")
+      if (!metamask) return alert(getErrorMessage("no_connection"))
       const accounts = await metamask.request({
         method: "eth_requestAccounts",
       })
@@ -59,12 +91,12 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
       setCurrentAccount(accounts[0])
     } catch (error) {
       console.error(error)
-      throw new Error("No Ethereum object")
+      throw new Error(getErrorMessage("no_eth_object"))
     }
   }
   const verifyWalletConnectionStatus = async (metamask = eth) => {
     try {
-      if (!metamask) return alert("Please install Metamask")
+      if (!metamask) return alert(getErrorMessage("no_connection"))
       const accounts = await metamask.request({
         method: "eth_accounts",
       })
@@ -75,8 +107,59 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
       }
     } catch (error) {
       console.error(error)
-      throw new Error("No Ethereum object")
+      throw new Error(getErrorMessage("no_eth_object"))
     }
+  }
+
+  const sendTransaction = async (
+    metamask = eth,
+    connectedAccount = currentAccount
+  ) => {
+    try{
+      if(!metamask) {
+        console.log("metamask missing")
+        return alert(getErrorMessage("no_connection"))
+      }
+      const { addressTo, amount} = formData
+      const transactionContract = getEthereumContract()
+      const parsedAmount = ethers.utils.parseEther(amount)
+      setProcessing(true)
+      const final_form = {
+        method: 'eth_sendTransaction',
+        params: [
+          {
+            from: connectedAccount,
+            to: addressTo,
+            gas: '0x7EF40', //520000 Gwei
+            value: parsedAmount._hex,
+          }
+        ]
+      }
+      console.log(final_form)
+      await metamask.request(final_form)
+      const transactionHash = await transactionContract.publishTransaction(
+        addressTo,
+        parsedAmount,
+        `Transferring ETH ${parsedAmount} to ${addressTo}`,
+        'TRANSFER'
+      )
+      await transactionHash.wait()
+
+      /*await saveTransaction(
+        transactionHash.hash,
+        amount,
+        connectedAccount,
+        addressTo
+      )*/
+    }catch(e){
+      console.error(e)
+    }finally{
+      setProcessing(false)
+    }
+  }
+
+  const handleChange = (e:any, name:string) => {
+    setFormData((prev) => ({...prev, [name]:e.target.value}))
   }
 
   return (
@@ -84,10 +167,15 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
       value={{
         accounts,
         currentAccount,
+        formData,
+        processing,
         connectWallet,
+        sendTransaction,
+        handleChange
       }}
     >
       {children}
     </TransactionContext.Provider>
   )
 }
+

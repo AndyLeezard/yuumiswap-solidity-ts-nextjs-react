@@ -2,7 +2,7 @@ export type StyleModule = {
   readonly [key: string]: string
 }
 export enum navState {
-  SWAP = "Swap",
+  SEND = "Send",
   POOL = "Pool",
   VOTE = "Vote",
 }

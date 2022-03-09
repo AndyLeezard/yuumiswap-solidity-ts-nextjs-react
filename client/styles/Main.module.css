@@ -49,6 +49,7 @@
 .transfer_prop_input {
   background-color: transparent;
   border: none;
+  color: #FFF;
   outline: 2px solid transparent;
   outline-offset: 2px;
   margin-bottom: 1.5rem;

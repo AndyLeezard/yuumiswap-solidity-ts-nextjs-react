@@ -1,25 +1,37 @@
-import React from "react"
+import React, { useContext } from "react"
 import Image from "next/Image"
 import { RiSettings3Fill } from "react-icons/ri"
 import { AiOutlineDown } from "react-icons/ai"
 import ethLogo from "../../assets/eth.png"
 import styles from "../../styles/Main.module.css"
 import { navState } from "../../types/Types"
+import { TransactionContext, TransactionContextInterface, TransactionFormDataProperties } from "../../contexts/Contexts"
 
 type Props = {}
 
 const Main = (props: Props) => {
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    str: string
-  ) => {}
-  const handleSubmit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {}
+  const { formData , handleChange, sendTransaction, processing } = useContext(TransactionContext) as TransactionContextInterface
+  
+  const handleSubmit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { addressTo, amount } = formData
+    console.log({ addressTo, amount})
+    e.preventDefault()
+    if(processing){
+      console.log("the function is still processing the last request")
+      return
+    }
+    if(!addressTo || !amount) {
+      console.log("either address or amount is missing !")
+      return
+    }
+    sendTransaction()
+  }
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
         <div className={styles.form_header}>
-          <div>{navState.SWAP}</div>
+          <div>{navState.SEND}</div>
           <div>
             <RiSettings3Fill />
           </div>
@@ -30,7 +42,8 @@ const Main = (props: Props) => {
             className={styles.transfer_prop_input}
             placeholder="0.0"
             pattern="^[0-9]*[.,]?[0-9]*$"
-            onChange={(e) => handleChange(e, "amount")}
+            value={formData.amount}
+            onChange={(e) => handleChange(e, TransactionFormDataProperties.AMOUNT)}
           />
           <div className={styles.currency_selector}>
             <div className={styles.currency_selector_content}>
@@ -52,14 +65,15 @@ const Main = (props: Props) => {
             type="text"
             className={styles.transfer_prop_input}
             placeholder="0x ..."
+            value={formData.addressTo}
             onChange={(e) => {
-              handleChange(e, "addressTo")
+              handleChange(e, TransactionFormDataProperties.ADDRESS_TO)
             }}
           />
           <div className={styles.currency_selector}></div>
         </div>
         <div className={styles.confirm_button} onClick={handleSubmit}>
-          Confirm
+          {processing ? "Processing":"Confirm"}
         </div>
       </div>
     </div>

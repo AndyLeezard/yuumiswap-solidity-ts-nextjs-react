@@ -6,7 +6,7 @@ import {
 } from "../../contexts/Contexts"
 import { navState } from "../../types/Types"
 
-export const nav_buttons = [navState.SWAP, navState.POOL, navState.VOTE]
+export const nav_buttons = [navState.SEND, navState.POOL, navState.VOTE]
 
 interface NavButtonProps {
   name: navState
