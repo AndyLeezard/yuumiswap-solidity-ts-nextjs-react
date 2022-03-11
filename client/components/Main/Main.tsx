@@ -1,26 +1,54 @@
 import React, { useContext } from "react"
-import Image from "next/Image"
+import Image from "next/image"
 import { RiSettings3Fill } from "react-icons/ri"
 import { AiOutlineDown } from "react-icons/ai"
 import ethLogo from "../../assets/eth.png"
 import styles from "../../styles/Main.module.css"
 import { navState } from "../../types/Types"
-import { TransactionContext, TransactionContextInterface, TransactionFormDataProperties } from "../../contexts/Contexts"
+import {
+  TransactionContext,
+  TransactionContextInterface,
+  TransactionFormDataProperties,
+} from "../../contexts/Contexts"
+import { useRouter } from "next/router"
+import Modal from "react-modal"
+import TransactionLoader from "../TransactionLoader/TransactionLoader"
+
+Modal.setAppElement("#__next")
 
 type Props = {}
 
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "#0a0b0d",
+    padding: 0,
+    border: "none",
+  },
+  overlay: {
+    backgroundColor: "rgba(10, 11, 13, 0.75)",
+  },
+}
+
 const Main = (props: Props) => {
-  const { formData , handleChange, sendTransaction, processing } = useContext(TransactionContext) as TransactionContextInterface
-  
+  const { formData, handleChange, sendTransaction, processing } = useContext(
+    TransactionContext
+  ) as TransactionContextInterface
+  const router = useRouter()
+
   const handleSubmit = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { addressTo, amount } = formData
-    console.log({ addressTo, amount})
+    console.log({ addressTo, amount })
     e.preventDefault()
-    if(processing){
+    if (processing) {
       console.log("the function is still processing the last request")
       return
     }
-    if(!addressTo || !amount) {
+    if (!addressTo || !amount) {
       console.log("either address or amount is missing !")
       return
     }
@@ -43,7 +71,9 @@ const Main = (props: Props) => {
             placeholder="0.0"
             pattern="^[0-9]*[.,]?[0-9]*$"
             value={formData.amount}
-            onChange={(e) => handleChange(e, TransactionFormDataProperties.AMOUNT)}
+            onChange={(e) =>
+              handleChange(e, TransactionFormDataProperties.AMOUNT)
+            }
           />
           <div className={styles.currency_selector}>
             <div className={styles.currency_selector_content}>
@@ -73,9 +103,12 @@ const Main = (props: Props) => {
           <div className={styles.currency_selector}></div>
         </div>
         <div className={styles.confirm_button} onClick={handleSubmit}>
-          {processing ? "Processing":"Confirm"}
+          {processing ? "Processing" : "Confirm"}
         </div>
       </div>
+      <Modal isOpen={!!router.query.loading} style={customStyles}>
+        <TransactionLoader />
+      </Modal>
     </div>
   )
 }

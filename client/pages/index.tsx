@@ -4,6 +4,7 @@ import Main from "../components/Main/Main"
 import styles from "../styles/Home.module.css"
 import { useWindowDimensions } from "../lib/FuncLib"
 import { ViewportContext } from "../contexts/Contexts"
+import TransactionHistory from "../components/TransactionHistory/TransactionHistory"
 
 const Home: NextPage = () => {
   const { height, width } = useWindowDimensions()
@@ -18,6 +19,7 @@ const Home: NextPage = () => {
       <div className={styles.wrapper}>
         <Header />
         <Main />
+        <TransactionHistory />
         <div> {"I'm the footer"}</div>
       </div>
     </ViewportContext.Provider>

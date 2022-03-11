@@ -1,0 +1,17 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 20rem; /* 384px */
+  width: 	20rem; /* 288px */
+  color: rgb(255 255 255);
+  background-color: #33176d;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.75rem; /* 28px */
+  margin-bottom: 3rem; /* 48px */
+}

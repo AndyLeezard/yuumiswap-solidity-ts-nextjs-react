@@ -3,6 +3,7 @@ import { contractABI, contractAddress } from "../lib/Constants"
 import { ethers } from "ethers"
 import { getErrorMessage } from "../lib/FuncLib"
 import { client } from "../lib/SanityClient"
+import { useRouter } from "next/router"
 declare global {
   interface Window {
     ethereum: any
@@ -69,6 +70,7 @@ interface TransactionProviderProps {
 export const TransactionProvider: React.FC<TransactionProviderProps> = ({
   children,
 }) => {
+  const router = useRouter()
   const [accounts, setAccounts] = useState<any[]>([])
   const [currentAccount, setCurrentAccount] = useState<any>()
   const [processing, setProcessing] = useState<boolean>(false)
@@ -217,6 +219,15 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
   const handleChange = (e: any, name: string) => {
     setFormData((prev) => ({ ...prev, [name]: e.target.value }))
   }
+
+  useEffect(() => {
+    if(processing) {
+      router.push(`/?loading=${currentAccount}`)
+    }else{
+      router.push(`/`)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [processing])
 
   return (
     <TransactionContext.Provider

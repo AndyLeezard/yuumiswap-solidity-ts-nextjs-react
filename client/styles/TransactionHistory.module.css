@@ -1,0 +1,46 @@
+.wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+  color: rgb(255 255 255);
+  user-select: none;
+  width: 100vw;
+  flex: 1 1 0%;
+  padding-top: 3.5rem; /* 56px */
+  padding-bottom: 3rem; /* 48px */
+  padding-right: 3rem;
+}
+
+.txHistoryItem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: #191a1e;
+  border-radius: 0.5rem; /* 8px */
+  padding: 1rem 1rem 1rem 1rem; /* 80px 16px 80px 16px */
+  margin-top: 0.5rem; /* 8px */
+  margin-bottom: 0.5rem; /* 8px */
+}
+
+.txDetails {
+  display: flex;
+  align-items: center;
+}
+
+.toAddress,
+.txTimeStamp {
+  margin-left: 0.625rem; /* 10px */
+  margin-right: 0.625rem; /* 10px */
+}
+
+.toAddress {
+  color: #f48706;
+}
+
+.etherscanLink {
+  margin-left: 3px;
+  display: flex;
+  align-items: center;
+  color: #2172e5;
+}

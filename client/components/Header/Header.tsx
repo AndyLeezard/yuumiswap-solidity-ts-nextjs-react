@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react"
-import Image from "next/Image"
+import Image from "next/image"
 import { FiArrowUpRight } from "react-icons/fi"
 import { AiOutlineDown } from "react-icons/ai"
 import { HiDotsHorizontal } from "react-icons/hi"
