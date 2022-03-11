@@ -49,3 +49,4 @@ yarn-error.log*
 smart_contract/hardhat.config.js
 hardhat.config.js
 client/lib/Transactions.json
+client/lib/SanityClient.ts

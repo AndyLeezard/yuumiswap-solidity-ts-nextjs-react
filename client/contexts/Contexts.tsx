@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { contractABI, contractAddress } from "../lib/Constants"
 import { ethers } from "ethers"
 import { getErrorMessage } from "../lib/FuncLib"
+import { client } from "../lib/SanityClient"
 declare global {
   interface Window {
     ethereum: any
@@ -145,17 +146,37 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
       )
       await transactionHash.wait()
 
-      /*await saveTransaction(
+      // Sanity DB
+      await saveTransaction(
         transactionHash.hash,
         amount,
         connectedAccount,
         addressTo
-      )*/
+      )
     }catch(e){
       console.error(e)
     }finally{
       setProcessing(false)
     }
+  }
+
+  const saveTransaction = async (txHash:any, amount:string, fromAddress:any = currentAccount, toAddress:string) => {
+    const txDoc = {
+      _type: "transaction",
+      _id: "txHash",
+      fromAddress: fromAddress,
+      toAddress: toAddress,
+      timestamp: new Date(Date.now()).toISOString(),
+      txHash: txHash,
+      amount: parseFloat(amount)
+    }
+    await client.createIfNotExists(txDoc)
+    await client.patch(currentAccount).setIfMissing({ transactions: []}).insert('after', 'transactions[-1]', [{
+      _key: txHash,
+      _ref: txHash,
+      _type: 'reference'
+    }]).commit()
+
   }
 
   const handleChange = (e:any, name:string) => {
