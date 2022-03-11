@@ -11,12 +11,12 @@ declare global {
 
 export enum TransactionFormDataProperties {
   ADDRESS_TO = "addressTo",
-  AMOUNT = "amount"
+  AMOUNT = "amount",
 }
 
 export type TransactionFormData = {
-  addressTo:string
-  amount:string
+  addressTo: string
+  amount: string
 }
 export interface ViewportContextInterface {
   screenHeight: number
@@ -32,7 +32,10 @@ export interface TransactionContextInterface {
   formData: TransactionFormData
   processing: boolean
   connectWallet: (metamask?: any) => Promise<void>
-  sendTransaction: (metamask?: any, connectedAccount?: undefined) => Promise<void>
+  sendTransaction: (
+    metamask?: any,
+    connectedAccount?: undefined
+  ) => Promise<void>
   handleChange: (e: any, name: string) => void
 }
 export const TransactionContext =
@@ -56,8 +59,8 @@ const getEthereumContract = () => {
 }
 
 const INITIAL_FORMDATA = {
-  addressTo: '',
-  amount: ''
+  addressTo: "",
+  amount: "",
 }
 interface TransactionProviderProps {
   children: React.ReactNode
@@ -69,7 +72,8 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
   const [accounts, setAccounts] = useState<any[]>([])
   const [currentAccount, setCurrentAccount] = useState<any>()
   const [processing, setProcessing] = useState<boolean>(false)
-  const [formData, setFormData] = useState<TransactionFormData>(INITIAL_FORMDATA)
+  const [formData, setFormData] =
+    useState<TransactionFormData>(INITIAL_FORMDATA)
 
   /**
    * for debugging purposes
@@ -81,6 +85,27 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
   useEffect(() => {
     verifyWalletConnectionStatus()
   }, [])
+
+  useEffect(() => {
+    if(!currentAccount){
+      return
+    }else{
+      ;(async ()=>{
+        const userDoc = {
+          _type: 'users',
+          _id: currentAccount,
+          userName: 'Unnamed',
+          address: currentAccount,
+        }
+        try{
+          await client.createIfNotExists(userDoc)
+        }catch(e){
+          console.error(JSON.stringify(e))
+        }
+      })()
+    }
+  }, [currentAccount])
+  
 
   const connectWallet = async (metamask = eth) => {
     try {
@@ -116,25 +141,25 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
     metamask = eth,
     connectedAccount = currentAccount
   ) => {
-    try{
-      if(!metamask) {
+    try {
+      if (!metamask) {
         console.log("metamask missing")
         return alert(getErrorMessage("no_connection"))
       }
-      const { addressTo, amount} = formData
+      const { addressTo, amount } = formData
       const transactionContract = getEthereumContract()
       const parsedAmount = ethers.utils.parseEther(amount)
       setProcessing(true)
       const final_form = {
-        method: 'eth_sendTransaction',
+        method: "eth_sendTransaction",
         params: [
           {
             from: connectedAccount,
             to: addressTo,
-            gas: '0x7EF40', //520000 Gwei
+            gas: "0x7EF40", //520000 Gwei
             value: parsedAmount._hex,
-          }
-        ]
+          },
+        ],
       }
       console.log(final_form)
       await metamask.request(final_form)
@@ -142,7 +167,7 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
         addressTo,
         parsedAmount,
         `Transferring ETH ${parsedAmount} to ${addressTo}`,
-        'TRANSFER'
+        "TRANSFER"
       )
       await transactionHash.wait()
 
@@ -153,34 +178,44 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
         connectedAccount,
         addressTo
       )
-    }catch(e){
+    } catch (e) {
       console.error(e)
-    }finally{
+    } finally {
       setProcessing(false)
     }
   }
 
-  const saveTransaction = async (txHash:any, amount:string, fromAddress:any = currentAccount, toAddress:string) => {
+  const saveTransaction = async (
+    txHash: any,
+    amount: string,
+    fromAddress: any = currentAccount,
+    toAddress: string
+  ) => {
     const txDoc = {
-      _type: "transaction",
-      _id: "txHash",
+      _type: "transactions",
+      _id: txHash,
       fromAddress: fromAddress,
       toAddress: toAddress,
       timestamp: new Date(Date.now()).toISOString(),
       txHash: txHash,
-      amount: parseFloat(amount)
+      amount: parseFloat(amount),
     }
     await client.createIfNotExists(txDoc)
-    await client.patch(currentAccount).setIfMissing({ transactions: []}).insert('after', 'transactions[-1]', [{
-      _key: txHash,
-      _ref: txHash,
-      _type: 'reference'
-    }]).commit()
-
+    await client
+      .patch(currentAccount)
+      .setIfMissing({ transactions: [] })
+      .insert("after", "transactions[-1]", [
+        {
+          _key: txHash,
+          _ref: txHash,
+          _type: "reference",
+        },
+      ])
+      .commit()
   }
 
-  const handleChange = (e:any, name:string) => {
-    setFormData((prev) => ({...prev, [name]:e.target.value}))
+  const handleChange = (e: any, name: string) => {
+    setFormData((prev) => ({ ...prev, [name]: e.target.value }))
   }
 
   return (
@@ -192,11 +227,10 @@ export const TransactionProvider: React.FC<TransactionProviderProps> = ({
         processing,
         connectWallet,
         sendTransaction,
-        handleChange
+        handleChange,
       }}
     >
       {children}
     </TransactionContext.Provider>
   )
 }
-
